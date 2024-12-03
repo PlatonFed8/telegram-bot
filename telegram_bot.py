@@ -218,7 +218,7 @@ def next_game(update: Update, context: CallbackContext) -> None:
     start(update, context)
 
 def main() -> None:
-    updater = Updater("8133933513:AAGwcnRCnWwcJYepv2GtbNWVWSFAALnHIsw")
+    updater = Updater("8133933513:AAFZgNBc3jqOJwaQWmUx37ByKO3uxpypf7o")
 
     updater.dispatcher.add_handler(CommandHandler("start", start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
