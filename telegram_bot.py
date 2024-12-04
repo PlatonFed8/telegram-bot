@@ -151,6 +151,11 @@ def ask_question(update: Update, context: CallbackContext, question_index: int) 
 def button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     query.answer()
+
+    # Инициализация current_phase, если он отсутствует
+    if 'current_phase' not in context.user_data:
+        context.user_data['current_phase'] = 0  # Устанавливаем начальное значение
+
     callback_data = query.data
 
     if callback_data == "next_game":
@@ -171,6 +176,7 @@ def button(update: Update, context: CallbackContext) -> None:
 
     query.edit_message_text(text=f"Вы выбрали: {answer}")
     ask_question(update, context, question_index + 1)
+
 
 # Функция для начала второго этапа
 def start_second_phase(update: Update, context: CallbackContext) -> None:
