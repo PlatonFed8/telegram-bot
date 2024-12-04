@@ -1,3 +1,16 @@
+from flask import Flask
+import threading
+
+# Запускаем HTTP-сервер для Render
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_server():
+    app.run(host="0.0.0.0", port=5000)
+
 import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
@@ -218,6 +231,8 @@ def next_game(update: Update, context: CallbackContext) -> None:
     start(update, context)
 
 def main() -> None:
+    server_thread = threading.Thread(target=run_server)
+    server_thread.start()
     updater = Updater("8133933513:AAFZgNBc3jqOJwaQWmUx37ByKO3uxpypf7o")
 
     updater.dispatcher.add_handler(CommandHandler("start", start))
