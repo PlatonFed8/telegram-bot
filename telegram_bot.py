@@ -237,46 +237,43 @@ def next_game(update: Update, context: CallbackContext) -> None:
     start(update, context)
 
 def main():
-import logging
-import time
-import os
-import signal
-import threading
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+    import logging
+    import time
+    import os
+    import signal
+    import threading
+    from telegram import Update
+    from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-# Настройка логирования
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+    # Настройка логирования
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
+    logger = logging.getLogger(__name__)
 
-# Ваш токен
-TOKEN = "8133933513:AAFZgNBc3jqOJwaQWmUx37ByKO3uxpypf7o"
+    TOKEN = "8133933513:AAFZgNBc3jqOJwaQWmUx37ByKO3uxpypf7o"
 
-# Функция для команды /start
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Привет! Я бот, готов работать!")
+    # Функция для команды /start
+    def start(update: Update, context: CallbackContext) -> None:
+        update.message.reply_text("Привет! Я бот, готов работать!")
 
-# Функция для обработки текстовых сообщений
-def echo(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(update.message.text)
+    # Функция для обработки текстовых сообщений
+    def echo(update: Update, context: CallbackContext) -> None:
+        update.message.reply_text(update.message.text)
 
-# Функция для обработки ошибок
-def error(update: Update, context: CallbackContext) -> None:
-    logger.warning(f"Произошла ошибка: {context.error}")
+    # Функция для обработки ошибок
+    def error(update: Update, context: CallbackContext) -> None:
+        logger.warning(f"Произошла ошибка: {context.error}")
 
-# Функция для завершения работы бота через 20 минут
-def restart_bot_after_delay():
-    logger.info("Бот будет перезапущен через 20 минут...")
-    time.sleep(20 * 60)  # Ожидание 20 минут
-    logger.info("Перезапуск бота...")
-    os.kill(os.getpid(), signal.SIGTERM)  # Завершение текущего процесса
+    # Функция для завершения работы бота через 20 минут
+    def restart_bot_after_delay():
+        logger.info("Бот будет перезапущен через 20 минут...")
+        time.sleep(20 * 60)  # Ожидание 20 минут
+        logger.info("Перезапуск бота...")
+        os.kill(os.getpid(), signal.SIGTERM)  # Завершение текущего процесса
 
-# Основная функция запуска бота
-def main():
-    # Создаём экземпляр Updater
+    # Основная функция запуска бота
     updater = Updater(TOKEN)
 
     # Диспетчер для регистрации обработчиков
@@ -291,14 +288,7 @@ def main():
     # Регистрация обработки ошибок
     dispatcher.add_error_handler(error)
 
-    # Запускаем таймер на перезапуск
+    # Запуск бота в отдельном потоке
     threading.Thread(target=restart_bot_after_delay, daemon=True).start()
-
-    # Запуск бота
     updater.start_polling()
     updater.idle()
-
-# Запуск
-if __name__ == '__main__':
-    main()
-
