@@ -236,7 +236,7 @@ def view_answers(update: Update, context: CallbackContext) -> None:
 def next_game(update: Update, context: CallbackContext) -> None:
     start(update, context)
 
-def main()
+def main():
 import logging
 import time
 import os
